@@ -19,7 +19,11 @@ const DocumentList = () => {
           if (!acc[doc.branch]) acc[doc.branch] = {};
           if (!acc[doc.branch][doc.year]) acc[doc.branch][doc.year] = {};
           if (!acc[doc.branch][doc.year][doc.semester]) acc[doc.branch][doc.year][doc.semester] = [];
-          acc[doc.branch][doc.year][doc.semester].push({ subject: doc.subject, fileUrl: doc.fileUrl });
+          acc[doc.branch][doc.year][doc.semester].push({
+            subject: doc.subject,
+            title: doc.title || "",
+            fileUrl: doc.fileUrl
+          });
           return acc;
         }, {});
         setGroupedDocs(grouped);
@@ -83,8 +87,11 @@ const DocumentList = () => {
                             <ul className="subject-list">
                               {groupedDocs[branch][year][sem].map((item, idx) => (
                                 <li key={idx}>
-                                  {item.subject}:{" "}
+                                  <strong>{item.subject || "Untitled"}</strong>
+                                  {item.title && <span> - {item.title}</span>}
+                                  {" | "}
                                   <a
+                                  
                                     href={item.fileUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -97,7 +104,9 @@ const DocumentList = () => {
                                     href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      handleDownload(item.fileUrl, `${item.subject}.pdf`);
+                                      const safeSubject = item.subject || "Document";
+                                      const safeTitle = item.title ? `_${item.title}` : "";
+                                      handleDownload(item.fileUrl, `${safeSubject}${safeTitle}.pdf`);
                                     }}
                                     className="view-link"
                                   >

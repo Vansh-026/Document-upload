@@ -8,6 +8,7 @@ const UploadPanel = () => {
   const [semester, setSemester] = useState('');
   const [year, setYear] = useState('2025');
   const [subject, setSubject] = useState('');
+  const [title, setTitle] = useState('Notes');   // ✅ New state for title
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -34,14 +35,21 @@ const UploadPanel = () => {
     formData.append('branch', branch);
     formData.append('semester', semester);
     formData.append('year', year);
+    formData.append('title', title);     // ✅ Added title
     formData.append('subject', subject);
     formData.append('file', file);
 
     try {
       await axios.post('/api/upload', formData);
-      setMessage('Upload successful!');
+      setMessage('✅ Upload successful!');
+      setBranch('');
+      setSemester('');
+      setYear('2025');
+      setTitle('Notes');
+      setSubject('');
+      setFile(null);
     } catch (err) {
-      setMessage('Upload failed.');
+      setMessage('❌ Upload failed.');
     }
     setLoading(false);
   };
@@ -66,7 +74,7 @@ const UploadPanel = () => {
           ))}
         </select>
 
-        {/* 🔹 Year Text Input */}
+        {/* 🔹 Year Input */}
         <input
           type="number"
           placeholder="Enter Year (e.g., 2025)"
@@ -75,14 +83,25 @@ const UploadPanel = () => {
           required
         />
 
+        {/* 🔹 Subject Input */}
         <input
           type="text"
-          placeholder="Subject (e.g., Math)"
+          placeholder="Subject (e.g., Mathematics)"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           required
         />
 
+        {/* 🔹 Title Input */}
+        <input
+          type="text"
+          placeholder="Title (e.g. Notes)"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+
+        {/* 🔹 File Input */}
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}

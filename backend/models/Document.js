@@ -5,6 +5,7 @@ const documentSchema = new mongoose.Schema({
   semester: { type: Number, required: true },
   year: { type: Number, required: true },
   subject: { type: String, required: true },
+  title: { type: String, required: true }, // Added title field
   fileUrl: { type: String, required: true },  // GitHub raw file URL
   uploadDate: { type: Date, default: Date.now }
 });

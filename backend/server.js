@@ -25,13 +25,14 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 // Upload route
 app.post('/api/upload', upload.single('file'), async (req, res) => {
-  const { branch, semester, year, subject } = req.body;
+  const { branch, semester, year, title, subject } = req.body; // <-- Added title
   const file = req.file;
 
   if (!file) return res.status(400).json({ error: 'No file uploaded' });
 
   // Upload to GitHub (create file in repo)
-  const filePath = `${branch}/${semester}/${year}/${subject}/${file.originalname}`;
+  const  filePath = `${branch}/${semester}/${year}/${subject}/${title}/${file.originalname}`;
+
   try {
     await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
       owner: process.env.GITHUB_OWNER,
@@ -44,14 +45,15 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     // GitHub raw URL for view/download
     const fileUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/master/${filePath}`;
 
-    // Save metadata to MongoDB
-    const doc = new Document({ branch, semester, year, subject, fileUrl });
+    // Save metadata to MongoDB (with title)
+    const doc = new Document({ branch, semester, year, subject, title, fileUrl });
     await doc.save();
 
     res.json({ message: 'Upload successful', fileUrl });
   } catch (err) {
     res.status(500).json({ error: 'Upload failed', details: err });
   }
+  console.log(req.body.title);
 });
 
 // Get all documents route (for view/download page)
@@ -61,5 +63,5 @@ app.get('/api/documents', async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
