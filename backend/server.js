@@ -43,7 +43,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     });
 
     // GitHub raw URL for view/download
-    const fileUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/master/${filePath}`;
+    const fileUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/main/${filePath}`;
 
     // Save metadata to MongoDB (with title)
     const doc = new Document({ branch, semester, year, subject, title, fileUrl });
