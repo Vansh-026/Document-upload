@@ -63,5 +63,5 @@ app.get('/api/documents', async (req, res) => {
 });
 
 // Start server
-const PORT = "https://document-upload-a9fg.onrender.com";
+const PORT = "5000";
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
