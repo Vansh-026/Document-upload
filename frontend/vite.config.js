@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://document-upload-a9fg.onrender.com/',
+        target: 'https://document-upload-a9fg.onrender.com',
         changeOrigin: true,
       },
     },
