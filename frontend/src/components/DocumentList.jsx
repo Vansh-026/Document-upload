@@ -12,7 +12,7 @@ const DocumentList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/api/documents')
+    axios.get('https://document-upload-a9fg.onrender.com/api/documents')
       .then(res => {
         setDocuments(res.data);
         const grouped = res.data.reduce((acc, doc) => {
