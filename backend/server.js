@@ -8,7 +8,11 @@ const Document = require('./models/Document');
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://document-upload-1.onrender.com", // frontend deployment link
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB
